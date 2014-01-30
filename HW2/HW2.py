@@ -7,7 +7,7 @@ from string import punctuation
 from  __builtin__ import any as nick_name
 
 def Load_Tweets():
-    counter = 0
+    ##counter = 0 #Used for small scale testing
     Obama_corpus = []
     Romney_corpus = []
     Obamney_corpus = []
@@ -20,9 +20,8 @@ def Load_Tweets():
     Rcount = 0
     oCount_Dict = {}
     rCount_Dict = {}
+    date_list = []
     for line in gzip.open('C:\\Users\\Paul\\Documents\\Spring 2014\\Data_Science_Visualization\\HomeWorks\\HW2\\HW02_twitterData.json.txt.gz','r'):
-        if counter == 50:
-            break
         tweet = json.loads(line.strip())
         #print tweet["created_at"], type(tweet["text"]), tweet["text"]
         
@@ -30,7 +29,7 @@ def Load_Tweets():
         clean_tweet = Sanitize_Tweet(tweet["text"])
         #formatting the date to make it nice and useable
         clean_date = Sanitize_Date(tweet["created_at"])
-        
+        date_list.append(clean_date)
         #checking to see who is mentioned
         #if check_value = 0, obama ; check_value = 1, romney; check_value= 2, both
         check_value = Sort_Out_Candidates(clean_tweet)#checking to see which candidate the tweet is about
@@ -59,15 +58,25 @@ def Load_Tweets():
             oCount_Dict[clean_date] = 0
         else:# both------------------------------------------------------
             Obamney_corpus.append(clean_tweet)
-            oCount_Dict[clean_date] = 1
-            rCount_Dict[clean_date] = 1
+            #checking to see if the date is already contained in dictionary
+            if clean_date in oCount_Dict:
+                #if it is, increment the count for that date key
+                oCount_Dict[clean_date] += 1
+                rCount_Dict[clean_date] += 1
+            else:
+                oCount_Dict[clean_date] = 1
+                rCount_Dict[clean_date] = 1
+                
         #print tweet["text"]
         #print check_value
         #print clean_tweet
         #print oCount_Dict[clean_date]
-        counter +=1
+        ##counter +=1 #used to do small scale testing
+        
         Plot_Dates(oCount_Dict[clean_date], rCount_Dict[clean_date], clean_date)
-    #print oCount_Dict
+    #Plot_Dates(oCount_Dict, rCount_Dict, date_list)
+    #print len(oCount_Dict)
+    #print len(rCount_Dict)
     #print Ocount
     #print Rcount
     #print counter
@@ -97,8 +106,8 @@ def Sort_Out_Candidates(clean_tweet):
     # 1 : One of Romney's nicknames was found in tweet
     # 2 : Both of their nickname were found in tweet
     
-    obama_names = ["obama","bama","barry","b.o","barrack","barack","bear","renegade","obomber","bammy","brak","divider","obamamama"]
-    romney_names = ["mitt","romney","mittens","mormon","mitney","mit","waffle","binder","nobama","romnuts","javelin"]
+    obama_names = ["obama","bama","barry","b.o","barrack","barack","bear","renegade","obomber","bammy","brak","divider","obamamama","bigo"]
+    romney_names = ["mitt","romney","mittens","mormon","mitney","mit","waffle","binder","nobama","romnuts","javelin","robme"]
     both_flag = [0,0] # if 1, then only romney, if 2 then both romeny and obama
     for name in romney_names:
         romney_nickname = nick_name(name in x for x in clean_tweet)
@@ -114,24 +123,25 @@ def Sort_Out_Candidates(clean_tweet):
                         
     if both_flag[0]==1 and both_flag[1]==1:
         check_value = 2
-            
+                    
     return check_value
     
 def Plot_Dates(oCorpus_count,rCorpus_count,clean_date):
-    print "Now Bama-----------------------------------------------------------------"
+    '''
+    print "Now Bama"
     print oCorpus_count
-    print "Now Romney--------------------------------------------------------------"
+    print "Now Romney"
     print rCorpus_count
-    print "Now Date------------------------------------------------------------------"
+    print "Now Date"
     print clean_date
-    print "Now Date------------------------------------------------------------------"
-    
+    print "Now Date"
+    '''
     Pclean_date = matplotlib.dates.date2num(clean_date)
-    plt.hold(True)
+    
     plt.plot_date(Pclean_date, oCorpus_count , ".-", color="blue")
     plt.plot_date(Pclean_date, rCorpus_count , ".-", color="red")
     
-    plt.xlabel("Date",fontsize=20)
+    plt.xlabel("Dates",fontsize=20)
     plt.ylabel("Count", fontsize=20)
     
     plt.tick_params(labelsize=8)
