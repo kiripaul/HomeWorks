@@ -4,7 +4,7 @@ from string import punctuation
 
 def Load_Tweets():
     counter = 0
-    for line in gzip.open('C:\\Users\\Paul\\Documents\\Spring 2014\\Data_Science_Visualization\\HW2\\HW02_twitterData.json.txt.gz','r'):
+    for line in gzip.open('C:\\Users\\Paul\\Documents\\Spring 2014\\Data_Science_Visualization\\HomeWorks\\HW2\\HW02_twitterData.json.txt.gz','r'):
         if counter >=20:
             break
         tweet = json.loads(line.strip())
