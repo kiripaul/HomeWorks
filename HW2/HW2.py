@@ -1,6 +1,8 @@
 import json
 import gzip
 import datetime
+import matplotlib.pyplot as plt
+import matplotlib.dates
 from string import punctuation
 from  __builtin__ import any as nick_name
 
@@ -12,8 +14,12 @@ def Load_Tweets():
     Obama_date_corpus = []
     Romney_date_corpus = []
     Obamney_date_corpus = []
+    Ocount = 0
+    Rcount = 0
+    oCount_Dict = {}
+    rCount_Dict = {}
     for line in gzip.open('C:\\Users\\Paul\\Documents\\Spring 2014\\Data_Science_Visualization\\HomeWorks\\HW2\\HW02_twitterData.json.txt.gz','r'):
-        if counter >=10:
+        if counter == 50:
             break
         tweet = json.loads(line.strip())
         #print tweet["created_at"], type(tweet["text"]), tweet["text"]
@@ -30,19 +36,39 @@ def Load_Tweets():
         
         #Appending each tweet to its respective corpus
         if check_value == 0:#obama
-            Obama_corpus.append(clean_tweet)
+            #Obama_corpus.append(clean_tweet)
             Obama_date_corpus.append(clean_date)
+            Ocount +=1
+            #checking to see if the date is already contained in dictionary
+            if clean_date in oCount_Dict:
+                oCount_Dict[clean_date] += 1
+            else:
+                oCount_Dict[clean_date] = 1  
         elif check_value == 1:# Romney
-            Romney_corpus.append(clean_tweet)
+            #Romney_corpus.append(clean_tweet)
             Romney_date_corpus.append(clean_date)
+            #need to append to Obama Date Corpus as well so that there is an actual entry for it
+            Obama_date_corpus.append(clean_date)
+            Rcount +=1
+            #checking to see if the date is already contained in dictionary
+            if clean_date in rCount_Dict:
+                rCount_Dict[clean_date] += 1
+            else:
+                rCount_Dict[clean_date] = 1
         else:# both
-            Obamney_corpus.append(clean_tweet)
+            #Obamney_corpus.append(clean_tweet)
             Obamney_date_corpus.append(clean_date)
-
         #print tweet["text"]
         #print check_value
         #print clean_tweet
+        #print oCount_Dict[clean_date]
         counter +=1
+        
+    Plot_Dates(oCount_Dict[clean_date], rCount_Dict[clean_date], oCount_Dict.count(clean_date),rCount_Dict.count(clean_date))
+    #print oCount_Dict
+    #print Ocount
+    #print Rcount
+    #print counter
 
 def Sanitize_Tweet(tweet):
     exclude = set(punctuation) # Keep a set of "bad" characters.
@@ -66,7 +92,6 @@ def Sanitize_Date(tweet):
     return formatted_date_years
     
 def Sort_Out_Candidates(clean_tweet):
-    # 
     # 0 : One of Obama's nicknames was found in tweet
     # 1 : One of Romney's nicknames was found in tweet
     # 2 : Both of their nickname were found in tweet
@@ -90,3 +115,18 @@ def Sort_Out_Candidates(clean_tweet):
         check_value = 2
             
     return check_value
+    
+def Plot_Dates(oCorpus_date,rCorpus_date,oTotal_Count,rTotal_Count):
+    datesO = matplotlib.dates.date2num(oCorpus_date)
+    datesR = matplotlib.dates.date2num(rCorpus_date)
+    
+    
+    plt.plot_date(datesO, oTotal_Count , ".-", color="blue")
+    plt.plot_date(datesR, rTotal_Count , ".-", color="red")
+    
+    plt.xlabel("Date",fontsize=20)
+    plt.ylabel("Count", fontsize=20)
+    
+    plt.tick_params(labelsize=8)
+    plt.show()
+    
