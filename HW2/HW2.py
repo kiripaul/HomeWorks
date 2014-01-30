@@ -11,9 +11,11 @@ def Load_Tweets():
     Obama_corpus = []
     Romney_corpus = []
     Obamney_corpus = []
+    '''
     Obama_date_corpus = []
     Romney_date_corpus = []
     Obamney_date_corpus = []
+    '''
     Ocount = 0
     Rcount = 0
     oCount_Dict = {}
@@ -35,36 +37,36 @@ def Load_Tweets():
         clean_tweet = list(clean_tweet)
         
         #Appending each tweet to its respective corpus
-        if check_value == 0:#obama
-            #Obama_corpus.append(clean_tweet)
-            Obama_date_corpus.append(clean_date)
+        if check_value == 0:#obama--------------------------------------
+            Obama_corpus.append(clean_tweet)
             Ocount +=1
             #checking to see if the date is already contained in dictionary
             if clean_date in oCount_Dict:
+                #if it is, increment the count for that date key
                 oCount_Dict[clean_date] += 1
             else:
-                oCount_Dict[clean_date] = 1  
-        elif check_value == 1:# Romney
-            #Romney_corpus.append(clean_tweet)
-            Romney_date_corpus.append(clean_date)
-            #need to append to Obama Date Corpus as well so that there is an actual entry for it
-            Obama_date_corpus.append(clean_date)
+                oCount_Dict[clean_date] = 1
+            rCount_Dict[clean_date]=0  
+        elif check_value == 1:# Romney-----------------------------------
+            Romney_corpus.append(clean_tweet)
             Rcount +=1
             #checking to see if the date is already contained in dictionary
             if clean_date in rCount_Dict:
+                #if it is, increment the count for that date key
                 rCount_Dict[clean_date] += 1
             else:
                 rCount_Dict[clean_date] = 1
-        else:# both
-            #Obamney_corpus.append(clean_tweet)
-            Obamney_date_corpus.append(clean_date)
+            oCount_Dict[clean_date] = 0
+        else:# both------------------------------------------------------
+            Obamney_corpus.append(clean_tweet)
+            oCount_Dict[clean_date] = 1
+            rCount_Dict[clean_date] = 1
         #print tweet["text"]
         #print check_value
         #print clean_tweet
         #print oCount_Dict[clean_date]
         counter +=1
-        
-    Plot_Dates(oCount_Dict[clean_date], rCount_Dict[clean_date], oCount_Dict.count(clean_date),rCount_Dict.count(clean_date))
+        Plot_Dates(oCount_Dict[clean_date], rCount_Dict[clean_date], clean_date)
     #print oCount_Dict
     #print Ocount
     #print Rcount
@@ -88,7 +90,6 @@ def Sanitize_Tweet(tweet):
 def Sanitize_Date(tweet):
     formatted_date_years = datetime.datetime.strptime(tweet,"%a, %d %b %Y %H:%M:%S" )
     formatted_date_years = formatted_date_years.replace(minute=0,second=0)
-    #print tweet
     return formatted_date_years
     
 def Sort_Out_Candidates(clean_tweet):
@@ -116,17 +117,22 @@ def Sort_Out_Candidates(clean_tweet):
             
     return check_value
     
-def Plot_Dates(oCorpus_date,rCorpus_date,oTotal_Count,rTotal_Count):
-    datesO = matplotlib.dates.date2num(oCorpus_date)
-    datesR = matplotlib.dates.date2num(rCorpus_date)
+def Plot_Dates(oCorpus_count,rCorpus_count,clean_date):
+    print "Now Bama-----------------------------------------------------------------"
+    print oCorpus_count
+    print "Now Romney--------------------------------------------------------------"
+    print rCorpus_count
+    print "Now Date------------------------------------------------------------------"
+    print clean_date
+    print "Now Date------------------------------------------------------------------"
     
-    
-    plt.plot_date(datesO, oTotal_Count , ".-", color="blue")
-    plt.plot_date(datesR, rTotal_Count , ".-", color="red")
+    Pclean_date = matplotlib.dates.date2num(clean_date)
+    plt.hold(True)
+    plt.plot_date(Pclean_date, oCorpus_count , ".-", color="blue")
+    plt.plot_date(Pclean_date, rCorpus_count , ".-", color="red")
     
     plt.xlabel("Date",fontsize=20)
     plt.ylabel("Count", fontsize=20)
     
     plt.tick_params(labelsize=8)
     plt.show()
-    
