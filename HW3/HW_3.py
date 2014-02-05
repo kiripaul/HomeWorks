@@ -1,8 +1,10 @@
 import json
 import pprint
+from string import punctuation
 
 enormous_corpus =[]
 message_corpus = []
+exclude_set = set(punctuation)
 
 def Load_Messages():
     counter = 0
