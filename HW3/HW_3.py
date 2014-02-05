@@ -12,7 +12,8 @@ def Load_Messages():
             #print user_message["message_time"]
             #print user_message
             pp = pprint.PrettyPrinter(5)
-            pp.pprint(user_message)
+            #pp.pprint(user_message)
+            print user_message["message_id"], user_message["message_time"], user_message["num_recipients"]
             print ""
             counter +=1
             
