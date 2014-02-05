@@ -54,7 +54,11 @@ def Load_Messages():
         print word, word2count[word]
 '''            
 def Word_Count(corpus):
-    dd
+        enormous_corpus_text = "".join(user_message["message"])
+        corpus_words = enormous_corpus_text.strip().split()        
+        word2count = { w:0 for w in set(corpus_words) }
+        for word in corpus_words:
+            word2count[ word ] += 1
         
 def Main():
     messages = Load_Messages()
