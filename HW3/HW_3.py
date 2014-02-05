@@ -4,14 +4,17 @@ from string import punctuation
 
 enormous_corpus =[]
 message_corpus = []
+text_corpus = {}
 exclude_set = set(punctuation)
 
 def Load_Messages():
-    counter = 0
+    #counter = 0
     for line in open('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\messages.json.txt','r'):
-        user_message = json.loads(line.strip())
-        message_corpus.append(user_message["message"])
-        
+        user_message = json.loads(line)
+        text_corpus["message"] = user_message["message"]
+        message_corpus.append(text_corpus)
+    #Don't uncomment this....you don't want to know how many messages there are
+    #print "There are %i total messages in our dataset." % len(message_corpus)
     return message_corpus
     
 '''
@@ -56,12 +59,11 @@ def Load_Messages():
         print word, word2count[word]
 '''            
 def Word_Count(corpus):
-        enormous_corpus_text = "".join(user_message["message"])
-        corpus_words = enormous_corpus_text.strip().split()        
-        word2count = { w:0 for w in set(corpus_words) }
-        for word in corpus_words:
-            word2count[ word ] += 1
+    corpus = corpus.lower()
+    corpus = " ".join([w for w in corpus.split() if not ("http://" in w)])
         
 def Main():
     messages = Load_Messages()
     Word_Count(messages)
+    
+Main()
