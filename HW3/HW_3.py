@@ -11,11 +11,14 @@ def Load_Messages():
             #print user_message["sender"],user_message["message"]
             #print user_message["message_time"]
             #print user_message
-            pp = pprint.PrettyPrinter(5)
+            #pp = pprint.PrettyPrinter(5)
             #pp.pprint(user_message)
-            print user_message.keys()
+            #print user_message.keys()
             #print user_message["message_id"], user_message["message_time"], user_message["num_recipients"]
-            print ""
+            if "sender" in user_message:
+                print "We have a sender"
+            #print ""
+            print counter
             counter +=1
             
 Load_Messages()
