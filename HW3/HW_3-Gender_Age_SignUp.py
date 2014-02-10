@@ -1,4 +1,5 @@
 import csv
+import json
 import matplotlib.dates as dates
 import matplotlib.pyplot as plt
 from collections import Counter
@@ -140,6 +141,7 @@ with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.
     #Graph_Gender(gender)
     #Graph_Age(ages)
 
-
+for line in open('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\messages.json.txt','r'):
+    user_message = json.loads(line.strip())
 
 
