@@ -2,11 +2,11 @@ import csv
 import matplotlib.dates as dates
 import matplotlib.pyplot as plt
 from collections import Counter
-import numpy as N
 
 tstamps =[]
 tstamps_formatted=[]
 gender=[]
+ages=[]
 counter = 0
 
 def Graph_SignUp_Date(ts_formatted):
@@ -97,22 +97,48 @@ def Graph_Gender(gender):
     plt.gcf().set_size_inches(12,8) # gcf = "get current figure"
     plt.show()
     
+    
+def Graph_Age(age):
+    age_counted = Counter(age)
+    #print age_counted
+    #print ""
+    age_sorted = sorted(age_counted.items())
+    # [(key1,val1), (key2,val2), ... ] --> (key1,key2,...), (val1,val2,...)
+    age, age_count = zip(*age_sorted)
+    #print age_sorted
+    
+    #plt.hold(True)
+    plt.bar(age, age_count, align="center") # blue line
+    #plt.xticks(range(len(gender_value)),Labels)
+    
+    
+    # annotate the plot:
+    plt.xlabel("Ages of Users", fontsize=18)
+    plt.ylabel("Number of Users", fontsize=18)
+    plt.title("Distribution of User Ages", fontsize=18)
+    
+    # This is a little small in this notebook, so here's a way
+    # to control the size of the figure:
+    plt.gcf().set_size_inches(12,8) # gcf = "get current figure"
+    plt.show()
+
+    
 with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.csv','r') as doc:
     for line in csv.DictReader(doc):
-        #print counter
-        #date = line["signup_date"][:10]
         date = line["signup_date"][:19]
         gender.append(line["gender"])
+        age = int(line["age"])
+        if age >= 8 and age <= 80:
+            ages.append(age)
         #print line["signup_date"]
         tstamps.append(date) #grabbing dates when signedup
         dt = dates.datestr2num(date)
         tstamps_formatted.append(dt)
         #print gender
-        counter +=1
         
     #Graph_SignUp_Date(tstamps_formatted)
     #Graph_Gender(gender)
-    #Graph_Age()
+    #Graph_Age(ages)
 
 
 
