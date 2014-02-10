@@ -2,6 +2,7 @@ import csv
 import matplotlib.dates as dates
 import matplotlib.pyplot as plt
 from collections import Counter
+import numpy as N
 
 tstamps =[]
 tstamps_formatted=[]
@@ -44,7 +45,11 @@ plt.title("SignUp Volume", fontsize=18)
 # This is a little small in this notebook, so here's a way
 # to control the size of the figure:
 plt.gcf().set_size_inches(12,8) # gcf = "get current figure"
-
+'''
+z=N.polyfit(dates_sort,ndates,1)
+p=N.poly1d(z)
+plt.plot(dates_sort,p(dates_sort),'r--') #add trendline to plot
+'''
 # Here's a trick to style the x-labels
 plt.gcf().autofmt_xdate() # takes some googling to discover these
 plt.show()
