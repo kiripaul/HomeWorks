@@ -7,6 +7,7 @@ import numpy as N
 tstamps =[]
 tstamps_formatted=[]
 gender=[]
+counter = 0
 
 def Graph_SignUp_Date(ts_formatted):
     dates_counted = Counter(tstamps_formatted)
@@ -83,7 +84,7 @@ def Graph_Gender(gender):
     Labels = ["Unknown","Female","Male"]
     #plt.hold(True)
     plt.bar(gender_identification, gender_value, align="center") # blue line
-    plt.xticks(gender_value,Labels)
+    plt.xticks(range(len(gender_value)),Labels)
     
     
     # annotate the plot:
@@ -98,6 +99,7 @@ def Graph_Gender(gender):
     
 with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.csv','r') as doc:
     for line in csv.DictReader(doc):
+        #print counter
         #date = line["signup_date"][:10]
         date = line["signup_date"][:19]
         gender.append(line["gender"])
@@ -106,9 +108,11 @@ with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.
         dt = dates.datestr2num(date)
         tstamps_formatted.append(dt)
         #print gender
+        counter +=1
         
     #Graph_SignUp_Date(tstamps_formatted)
-    Graph_Gender(gender)
+    #Graph_Gender(gender)
+    #Graph_Age()
 
 
 
