@@ -47,8 +47,38 @@ def Graph_SignUp_Date(ts_formatted):
 
 def Graph_Gender(gender):
     gender_counted = Counter(gender)
-    print gender_counted
-
+    gender_sorted = sorted(gender_counted.items())
+    gender_identification, gender_value = zip(*gender_sorted)
+    print gender_value , gender_identification
+    gender_value = list(gender_value)
+    gender_identification = list(gender_identification)
+    [float(i) for i in gender_value]
+    '''
+    for i in range(gender_identification):
+        if gender_identification[i] == 'M':
+            gender_identification[i] = 0
+        elif gender_identification == 'F':
+            gender_identification[i] = 1
+        else:
+            gender_identification[i] = 3
+    '''          
+    print type(gender_value[2])
+    '''
+    plt.hold(True)
+    plt.plot(gender_identification, gender_value, 'b-') # blue line
+    
+    # annotate the plot:
+    plt.xlabel("Gender Identification", fontsize=18)
+    plt.ylabel("User Gender", fontsize=18)
+    plt.title("Distribution of User Genders", fontsize=18)
+    
+    # This is a little small in this notebook, so here's a way
+    # to control the size of the figure:
+    plt.gcf().set_size_inches(12,8) # gcf = "get current figure"
+    # Here's a trick to style the x-labels
+    #plt.gcf().autofmt_xdate() # takes some googling to discover these
+    plt.show()
+    '''
 with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.csv','r') as doc:
     for line in csv.DictReader(doc):
         #date = line["signup_date"][:10]
