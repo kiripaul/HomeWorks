@@ -67,27 +67,33 @@ def Graph_Gender(gender):
     gender_identification.pop(0)#need to remove first value
     for i in range(4):
         gender_identification.pop(2)
+        
+    print gender_identification    
     gender_identification.insert(0,0)
     gender_identification[1] = 1
     gender_identification[2] = 2
+    
+    for i in range(3):
+        gender_identification[i] = int(gender_identification[i])
     
     print ""    
     print gender_value , gender_identification 
     print type(gender_value[0]), type(gender_identification[2])
     
-    plt.hold(True)
-    plt.bar(gender_identification, gender_value) # blue line
+    Labels = ["Unknown","Female","Male"]
+    #plt.hold(True)
+    plt.bar(gender_identification, gender_value, align="center") # blue line
+    plt.xticks(gender_value,Labels)
+    
     
     # annotate the plot:
     plt.xlabel("Gender Identification", fontsize=18)
-    plt.ylabel("User Gender", fontsize=18)
+    plt.ylabel("Gender Count", fontsize=18)
     plt.title("Distribution of User Genders", fontsize=18)
     
     # This is a little small in this notebook, so here's a way
     # to control the size of the figure:
     plt.gcf().set_size_inches(12,8) # gcf = "get current figure"
-    # Here's a trick to style the x-labels
-    #plt.gcf().autofmt_xdate() # takes some googling to discover these
     plt.show()
     
 with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.csv','r') as doc:
