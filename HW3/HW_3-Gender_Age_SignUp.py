@@ -1,5 +1,8 @@
 import csv
 import json
+import datetime
+import time
+import re
 import matplotlib.dates as dates
 import matplotlib.pyplot as plt
 from collections import Counter
@@ -8,6 +11,7 @@ tstamps =[]
 tstamps_formatted=[]
 gender=[]
 ages=[]
+mail_Message_Time={}
 counter = 0
 
 def Graph_SignUp_Date(ts_formatted):
@@ -123,6 +127,13 @@ def Graph_Age(age):
     plt.gcf().set_size_inches(12,8) # gcf = "get current figure"
     plt.show()
 
+def Sanitize_Message(mail):
+    mail["message"]=re.sub("[;:@#,.!`?'\"]|http","",mail["message"])
+    if (type(mail["message_time"])== float):
+        mail["message_time"]= time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(mail["message_time"]))
+        mail["message_time"]=datetime.datetime.strptime(mail["message_time"],"%Y-%m-%d %H:%M:%S")
+        mail_Message_Time[mail["message_time"]]=mail["message"]
+    return mail_Message_Time
     
 with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.csv','r') as doc:
     for line in csv.DictReader(doc):
@@ -143,5 +154,7 @@ with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.
 
 for line in open('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\messages.json.txt','r'):
     user_message = json.loads(line.strip())
+    user_message = Sanitize_Message(user_message)
+    print user_message
 
 
