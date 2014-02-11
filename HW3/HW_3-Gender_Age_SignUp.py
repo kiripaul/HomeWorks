@@ -2,7 +2,6 @@ import csv
 import json
 import datetime
 import time
-import re
 import matplotlib.dates as dates
 import matplotlib,matplotlib.pyplot as plt
 import collections
@@ -83,11 +82,11 @@ def Graph_Gender(gender):
     
     for i in range(3):
         gender_identification[i] = int(gender_identification[i])
-    
+    '''
     print ""    
     print gender_value , gender_identification 
     print type(gender_value[0]), type(gender_identification[2])
-    
+    '''
     Labels = ["Unknown","Female","Male"]
     #plt.hold(True)
     plt.bar(gender_identification, gender_value, align="center") # blue line
@@ -133,34 +132,62 @@ def Fix_Time(mTime):
     #converting mTime to datetime data type   
     if (type(mTime)== float):
         mTime= time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(mTime))
-    mTime=datetime.datetime.strptime(mTime,"%Y-%m-%d %H:%M:%S")   
-
+        #mTime= time.strftime("%Y-%m-%d",time.localtime(mTime))
+    
+    mTime=datetime.datetime.strptime(mTime,"%Y-%m-%d %H:%M:%S").date()
+    #mTime=datetime.datetime.strptime(mTime,"%Y-%m-%d")    
+    #print mTime
     return mTime
+    
+def Graph_Usage(message_dates):
+    messages_counted = Counter(message_dates)
+    messages_sorted = sorted(messages_counted.items())
+    print messages_sorted
+    
+    # [(key1,val1), (key2,val2), ... ] --> (key1,key2,...), (val1,val2,...)
+    dates, date_count = zip(*messages_sorted)
+    #print age_sorted
+    
+    #plt.hold(True)
+    plt.bar(dates, date_count, align="center") # blue line
+    #plt.xticks(range(len(gender_value)),Labels)
+    
+    # annotate the plot:
+    plt.xlabel("Ages of Users", fontsize=18)
+    plt.ylabel("Number of Users", fontsize=18)
+    plt.title("Distribution of User Ages", fontsize=18)
+    
+    # This is a little small in this notebook, so here's a way
+    # to control the size of the figure:
+    plt.gcf().set_size_inches(12,8) # gcf = "get current figure"
+    plt.show()
+    
 
 with open ('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\bios.csv','r') as doc:
     for line in csv.DictReader(doc):
+        #print type(line)
         date = line["signup_date"][:19]
         gender.append(line["gender"])
         age = int(line["age"])
         if age >= 8 and age <= 80:
             ages.append(age)
-        #print line["signup_date"]
         tstamps.append(date) #grabbing dates when signedup
         dt = dates.datestr2num(date)
         tstamps_formatted.append(dt)
-        #print gender
         
     #Graph_SignUp_Date(tstamps_formatted)
     #Graph_Gender(gender)
     #Graph_Age(ages)
 
+
 for line in open('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\messages.json.txt','r'):
     user_message = json.loads(line.strip())
+    #print type(user_message)
     mTime=user_message["message_time"]
     yTime = Fix_Time(mTime)
     user_message_dates.append(yTime)
-    
-#print user_message_dates[200]
+
+Graph_Usage(user_message_dates)
     
 
     
