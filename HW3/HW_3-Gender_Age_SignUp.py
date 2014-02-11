@@ -142,8 +142,8 @@ def Main():
             
         #Graph_SignUp_Date(tstamps_formatted)
         #Graph_Gender(gender)
-        #Graph_Age(ages)
-    
+        Graph_Age(ages)
+'''
     for line in open('C:\\Users\\Paul\\Documents\\Spring 2014\\DSV_Data_Files\\HW_3\\messages.json.txt','r'):
         user_message = json.loads(line.strip())
         mTime=user_message["message_time"]
@@ -151,8 +151,9 @@ def Main():
         user_message_dates.append(yTime)
     
     Graph_Usage(user_message_dates)
-    
+''' 
 
+Main()
     
     
     
